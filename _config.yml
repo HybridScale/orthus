@@ -1,1 +1,6 @@
 theme: jekyll-theme-cayman
+  name: material
+plugins:
+  - search
+  - tags:
+      tags_file: index.md
