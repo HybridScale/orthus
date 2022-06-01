@@ -1,4 +1,5 @@
-## Orthus claster user documentation
+## Orthus cluster users' documentation
+
 
 You can use the [editor on GitHub](https://github.com/HybridScale/orthus/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
