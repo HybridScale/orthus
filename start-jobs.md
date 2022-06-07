@@ -1,3 +1,9 @@
+---
+title: Running jobs
+layout: template-simple
+filename: start-jobs
+---
+
 ## Introduction
 
 For scheduling and maintainig the jobs on Orthus cluster the **SGE** (Sun of Grid Engine) is used. 
