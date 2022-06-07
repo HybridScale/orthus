@@ -1,4 +1,5 @@
 {% for page in site.pages %}
-    <a href= {{ page.filename }} class="btn">{{ page.title }}</a>
+    <a href={{ page.filename }} class="btn">{{ page.title }}</a>
 {% endfor %}
+<a href=howto>How To</a>
 {{ content }}
