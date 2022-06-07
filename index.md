@@ -1,7 +1,7 @@
 ---
-title: PAGE TITLE HERE
-layout: template
-filename: index.md
+title: Welcome to ORTHUS cluster
+layout: template-simple
+filename: index
 ---
 
 ### This is Orthus user pages
