@@ -1,6 +1,6 @@
 ---
 title: Running jobs
-layout: template-simple
+layout: template
 filename: running 
 ---
 

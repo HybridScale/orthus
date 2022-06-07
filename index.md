@@ -1,6 +1,6 @@
 ---
 title: Welcome to ORTHUS cluster
-layout: template-simple
+layout: template
 filename: index
 ---
 
