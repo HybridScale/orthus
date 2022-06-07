@@ -1,1 +1,16 @@
-{{ content }}
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <title>{{ page.title }}</title>
+    </head>
+    <body>
+        <section class="page-header">
+            {% for page in site.pages %}
+                <a href= {{ page.filename }} class="btn">{{ page.title }}</a>
+            {% endfor %}
+        </section>
+        <section class="main-content">
+            {{ content }}
+        </section>
+    </body>
+</html>
