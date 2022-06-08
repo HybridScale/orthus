@@ -22,17 +22,20 @@ The Orthus cluster currently consists of a frontend (User Interface) node, one c
     - 48 computer cores
     - 4 x NVIDIA A100 PCI 40GB HBM2e memory
     - 512 GB main memory
-    - 10 Gb/s network adapter
+    - 2 x 10 Gb/s network adapter
     
 2. **Storage node**
 
     - QNAP TS-1886-XU
     - 10 x 8 TB
     - RAID 6
-    - 10 Gb/s network adapter
+    - 4 x 10 Gb/s network adapter
 
-3. **Network**
+3. **Network infrastructure**
 
-    - 10 Gb/s interconnection
-   
+    - Mikrotik CRS312-4C+8XG-RM
+    - 12 x 10 Gb/s ports
+
+---
 <!--![Alt text](https://mojoblak.irb.hr/s/gifFHzfM9gwNxx9/download/HRZZ-eng.jpg)-->
+<img align="left" width="400" height="185" src="https://mojoblak.irb.hr/s/gifFHzfM9gwNxx9/download/HRZZ-eng.jpg">
