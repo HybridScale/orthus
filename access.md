@@ -12,7 +12,7 @@ filename: access
 <!--If you access the cluster from outside the RBI network you will first have to establish a VPN connection to RBI. Information on how to use VPN can be found [here](http://helpdesk.irb.hr/wiki/OpenVPN). Once the VPN is established, the cluster can be accessed following the instructions [Access from the RBI network](<#access-from-the-rbi-network>).-->
 
 ## Login node
- - hostname: orthus.cir.irb.hr
+ - hostname: **orthus.cir.irb.hr**
  - ip address: 10.129.8.65
 
 ## Access from the RBI network

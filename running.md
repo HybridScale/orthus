@@ -32,13 +32,14 @@ The command _qsub_ returns the job ID which can be used later for monitoring the
 Your job <JobID> ("my_job") has been submitted
 ```
 
-Check the status of all submitted jobs:
+Check the status of submitted jobs:
 ```
 qstat
 ```
-Check the status of jobs submitted by user:
+which will list all the jobs submitted by the current user. To check the status of all jobs submitted by all users / particular user run:
 ```
-qstat -u $USER
+qstat -u '*'
+qstat -u <username>
 ```
 
 The possible states of the jobs are: r (running), p (pending), qw (queuing). 
@@ -92,6 +93,18 @@ An example of the a simple script to start a serial job (requiring only 1 CPU co
 
     data
     hostname
+```
+### Interactive jobs
+
+To start an interactive job, a `qrsh` command is required. The direct access to the command line of the worker node can be done simply by running:
+```
+qrsh
+```
+
+For example, to run a parallel interactive job that requires _RStudio_ package and 4 processor cores:
+```
+spack load RStudio
+qrsh -pe mpi 4 -V -display 10.1.1.1:0.0 rstudio
 ```
 
 ### Parallel jobs
