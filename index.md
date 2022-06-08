@@ -1,7 +1,7 @@
 ---
-title: Welcome to ORTHUS cluster
+title: About
 layout: template
 filename: index
 ---
 
-### This is Orthus user pages
+## About orthus cluster 
