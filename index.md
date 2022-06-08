@@ -15,4 +15,4 @@ The cluster is acquired via two National Science Foundation projects:
 ## Technical characteristics
 
 
-![Alt text](https://mojoblak.irb.hr/s/gifFHzfM9gwNxx9)
+![Alt text](https://mojoblak.irb.hr/s/gifFHzfM9gwNxx9/download/HRZZ-eng.jpg)
