@@ -6,7 +6,7 @@ filename: running
 
 ## Introduction
 
-For scheduling and maintainig the jobs on Orthus cluster the **SGE** (Sun of Grid Engine) is used. 
+For scheduling and maintainig the jobs on Orthus cluster the **[SGE](http://star.mit.edu/cluster/docs/0.93.3/guides/sge.html)** (Sun of Grid Engine) queuing system is used. 
 
 ## Running jobs
 

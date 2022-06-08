@@ -97,33 +97,33 @@ spack load --list
 
 ### Compilers
 
-    List of compilers and their corresponding packages are listed in the table:
+The list of compilers and their corresponding Spack packages are listed in the table:
 
-    | Version | package |
-    |---------|---------|
-    | GCC 4.8.5   |    /    |
-    | GCC 9.4.0   | gcc@9.4.0 |
-    | GCC 11.2.0  | gcc@11.2.0 |
-    | Intel OneAPI 2022.0.1 | intel-openapi-compilers@2022.0.1 |
-    | NVHPC 2022.1 | nvhpc@22.1 |
-  
+| Version               | package                          |
+|-----------------------|----------------------------------|
+| GCC 4.8.5             |                             |
+| GCC 9.4.0             | gcc@9.4.0                        |
+| GCC 11.2.0            | gcc@11.2.0                       |
+| Intel OneAPI 2022.0.1 | intel-openapi-compilers@2022.0.1 |
+| NVHPC 2022.1          | nvhpc@22.1                       |
+
 ### MPI
 
 ### Users applications
 
 List of installed user's applications:
 
-    - PyTorch: 1.11.0
-    - R: 4.1.2
-    - RStudio: 1.4.1717
-    - Python: 3.9.10
-    - OpenMPI: 4.1.2, 4.1.3
-    - Octave: 7.1.0
-    - Magma: 2.6.1
-    - Miniconda3: 4.10.3
-    - git: 2.31.1
-    - cuda: 11.6.0
-    - boost: 1.78.0
-    - cmake: 3.22.0
-    - Intel OneAPI MKL: 2022.0.1
+- PyTorch: 1.11.0
+- R: 4.1.2
+- RStudio: 1.4.1717
+- Python: 3.9.10
+- OpenMPI: 4.1.2, 4.1.3
+- Octave: 7.1.0
+- Magma: 2.6.1
+- Miniconda3: 4.10.3
+- git: 2.31.1
+- cuda: 11.6.0
+- boost: 1.78.0
+- cmake: 3.22.0
+- Intel OneAPI MKL: 2022.0.1
 
