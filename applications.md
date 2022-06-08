@@ -1,4 +1,5 @@
----itle: Applications
+---
+title: Applications
 layout: template
 filename: applications
 ---
