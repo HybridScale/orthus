@@ -9,6 +9,7 @@ filename: running
 1. [Introduction](#introduction)
 2. [File system](#file-system)
     - [Storage folder](#storage-folder)
+    - [Scratch folder](#scratch-folder)
 2. [Running job](#running-jobs)
     - [Job description](#job-description)
 3. [Types of jobs](#types-of-jobs)
@@ -28,7 +29,7 @@ The table below gives an overview over the available file systems:
 
 | Mount point | Accesibility | Description |
 |-------------|--------------|-------------|
-| /home/<username> | Login+Compute | NFS user's home folder visible on frontend and compute nodes |
+| /home | Login+Compute | NFS user's home folder visible on frontend and compute nodes |
 | /apps | Login+Compute | NFS shared folder in which packages are installed |
 | /storage | Login+Compute | NFS shared folder for sharing
 | /scratch | Compute | Local and fast (SSD) storage on each compute node |
