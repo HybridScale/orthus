@@ -11,9 +11,12 @@
     </head>
     <body>
         <section class="page-header">
+            <h1 class="project-name">ORTHUS cluster</h1>
+            <h2 class="project-tagline"></h2>
             {% for page in site.pages %}
                 <a href= {{ page.filename }} class="btn">{{ page.title }}</a>
             {% endfor %}
+            <a href="https://github.com/HybridScale/orthus/tree/gh-pages" class="btn">View on GitHub</a>
         </section>
         <section class="main-content">
             {{ content }}
