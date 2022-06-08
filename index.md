@@ -17,26 +17,22 @@ The cluster is acquired via two National Science Foundation projects:
 The Orthus cluster currently consists of a frontend (User Interface) node, one compute node and a storage node.
 
 1. **Compute node (GPU)**
-
     - 2 x Intel(R) Xeon(R) Gold 6240R CPU @ 2.40GHz
     - 48 computer cores
     - 4 x NVIDIA A100 PCI 40GB HBM2e memory
     - 512 GB main memory
     - 2 x 10 Gb/s network adapter
-    
-2. **Storage node**
 
+2. **Storage node**
     - QNAP TS-1886-XU
     - 10 x 8 TB
     - RAID 6
     - 4 x 10 Gb/s network adapter
 
 3. **Network infrastructure**
-
     - Mikrotik CRS312-4C+8XG-RM
     - 12 x 10 Gb/s ports
 
 ---
-<!--![Alt text](https://mojoblak.irb.hr/s/gifFHzfM9gwNxx9/download/HRZZ-eng.jpg)-->
 <img align="left" width="400" height="185" src="https://mojoblak.irb.hr/s/gifFHzfM9gwNxx9/download/HRZZ-eng.jpg">
 <img align="right" style="width=50%" src="https://mojoblak.irb.hr/s/9CPc6HojToCyxet/download/IRB-logo.jpg">

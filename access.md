@@ -6,10 +6,14 @@ filename: access
 
 **_The access to the cluster is possible only within the IRB network_**
 
-- Connecting from the IRB network - [Access from the RBI network](## Access from the RBI network>).
-- Connecting from the outside of the RBI network - [Access from outside the RBI network](## Access from outside the RBI network).
+- Connecting from the IRB network - [Access from the RBI network](#access-from-the-rbi-network>).
+- Connecting from the outside of the RBI network - [Access from outside the RBI network](#access-from-outside-the-rbi-network).
 
-<!--If you access the cluster from outside the RBI network you will first have to establish a VPN connection to RBI. Information on how to use VPN can be found [here](http://helpdesk.irb.hr/wiki/OpenVPN). Once the VPN is established, the cluster can be accessed following the instructions [Access from the RBI network](<# Access from the RBI network>).-->
+<!--If you access the cluster from outside the RBI network you will first have to establish a VPN connection to RBI. Information on how to use VPN can be found [here](http://helpdesk.irb.hr/wiki/OpenVPN). Once the VPN is established, the cluster can be accessed following the instructions [Access from the RBI network](<#access-from-the-rbi-network>).-->
+
+## Login node
+ - hostname: orthus.cir.irb.hr
+ - ip address: 10.129.8.65
 
 ## Access from the RBI network
 ### Linux
@@ -26,4 +30,4 @@ We encourage the access using SSH protocol by using private key rather than pass
 
 ## Access from outside the RBI network
 
-If you access the cluster from outside the RBI network you will first have to establish a VPN connection to RBI. Information on how to use VPN can be found [here](http://helpdesk.irb.hr/wiki/OpenVPN). Once the VPN is established, the cluster can be accessed following the instructions [Access from the RBI network](<# Access from the RBI network>).
+If you access the cluster from outside the RBI network you will first have to establish a VPN connection to RBI. Information on how to use VPN can be found [here](http://helpdesk.irb.hr/wiki/OpenVPN). Once the VPN is established, the cluster can be accessed following the instructions in [Access from the RBI network](<##access-from-the-rbi-network>).
