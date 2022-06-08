@@ -4,6 +4,16 @@ layout: template
 filename: running
 ---
 
+## Content
+
+1. [Introduction](#introduction)
+2. [Running job](#running-jobs)
+    - [Job description](#job-description)
+3. [Types of jobs](#types-of-jobs)
+    - [Serial](#serial-jobs)
+    - [Parallel](#parallel-jobs)
+    - [GPU](#gpu-jobs)
+
 ## Introduction
 
 For scheduling and maintainig the jobs on Orthus cluster the **[SGE](http://star.mit.edu/cluster/docs/0.93.3/guides/sge.html)** (Sun of Grid Engine) queuing system is used. 
@@ -12,9 +22,28 @@ For scheduling and maintainig the jobs on Orthus cluster the **[SGE](http://star
 
 User's applications (in following text names *jobs*) are run/submitted via SGE and have to be described with the **start shell script**. Inside each shell script, before standard shell command, a special SGE command has to be defined that describe to the SGE the resources the job requires.
 
-To start a job run:
+To start a job run command:
+```
+qsub <SGE PARAMETERS> <name of the start script>
+```
 
-    qsub <SGE PARAMETERS> <name of the start script>
+The command _qsub_ returns the job ID which can be used later for monitoring the status of the job.
+```
+Your job <JobID> ("my_job") has been submitted
+```
+
+Check the status of all submitted jobs:
+```
+qstat
+```
+Check the status of jobs submitted by user:
+```
+qstat -u $USER
+```
+
+The possible states of the jobs are: r (running), p (pending), qw (queuing). 
+
+A more detailed description on how to describe and monitor jobs can be found in the [documentation](https://wiki.srce.hr/display/RKI/Pokretanje+i+upravljanje+poslovima) of the [Isabella](https://www.srce.unizg.hr/isabella/) cluster at SRCE as both systems have the same queuing management.
 
 ### Job description
 
@@ -34,21 +63,10 @@ The structure of the job start script (file: _my_job.sh_):
 The job is submitted to cluster for execution by running the command:
 
 ```
-    qsub my_job.sh
+qsub my_job.sh
 ```
 
-The command _qsub_ returns the job ID which can be used later for monitoring the status of the job.
-```
-    Your job <JobID> ("my_job") has been submitted
-```
-
-Check the list of all submitted jobs run:
-```
-qstat
-```
-
-
-### Basic SGE parameters
+The basic SGE parameters for describing the jobs are:
 ```
     -N <job name>: name of the job that will be printed when checking the job status
     -o <file name>: file to which the standard output will be redirected (the standard output to the terminal will be printed into this file)
@@ -60,7 +78,7 @@ qstat
     -V: SGE will transfer all current environment variable to the job
 ```
 
-## Type of jobs
+## Types of jobs
 
 ### Serial jobs
 
