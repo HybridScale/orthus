@@ -4,13 +4,16 @@ layout: template
 filename: applications
 ---
 
-Content
+## Content
 
 1. [Spack](#spack)
     - [Find applications and packages](#find-applications-and-packages)
     - [Loading and unloading packages](#loading-and-unloading-packages)
 
 2. [Installed applications](#installed-applications)
+    - [Compilers](#compilers)
+    - [MPI](#mpi)
+    - [Users' applications](#users-applications)
 
 ## Spack
 
@@ -18,13 +21,13 @@ The users' applications are installed, maintained, and loaded/unloaded from the 
 
 ### Find applications and packages
 
-To get a list of all installed software packages:
+To get a list of all installed packages:
 
 ```
 spack find
 ```
 
-which will print a long list of all installed packaged. To list only explicitly installed packages (without listing their dependencies) run:
+The command will print a long list of all installed packaged. To list only explicitly installed packages (without listing their dependencies) run:
 
 ```
 spack find -x
@@ -61,7 +64,7 @@ To load the packages into environment run:
 spack load <package> <package>
 ```
 Use _tab_ to autocomplete command and thus avoid unnecessary typing :)
-When the package is loaded, all its dependencies and auxiliary packages are also loaded automatically. The user does not have to take care of the dependency list.
+When the package is loaded, all its dependencies and auxiliary packages are loaded automatically. The user does not have to take care of the dependency list.
 
 If multiple version of the same package are installed then provide version number when loading by running:
 ```
@@ -91,3 +94,36 @@ spack load --list
 ```
 
 ## Installed applications
+
+### Compilers
+
+    List of compilers and their corresponding packages are listed in the table:
+
+    | Version | package |
+    |---------|---------|
+    | GCC 4.8.5   |    /    |
+    | GCC 9.4.0   | gcc@9.4.0 |
+    | GCC 11.2.0  | gcc@11.2.0 |
+    | Intel OneAPI 2022.0.1 | intel-openapi-compilers@2022.0.1 |
+    | NVHPC 2022.1 | nvhpc@22.1 |
+  
+### MPI
+
+### Users applications
+
+List of installed user's applications:
+
+    - PyTorch: 1.11.0
+    - R: 4.1.2
+    - RStudio: 1.4.1717
+    - Python: 3.9.10
+    - OpenMPI: 4.1.2, 4.1.3
+    - Octave: 7.1.0
+    - Magma: 2.6.1
+    - Miniconda3: 4.10.3
+    - git: 2.31.1
+    - cuda: 11.6.0
+    - boost: 1.78.0
+    - cmake: 3.22.0
+    - Intel OneAPI MKL: 2022.0.1
+
