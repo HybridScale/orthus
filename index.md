@@ -1,5 +1,5 @@
 ---
-title: About
+title: Welcome
 layout: template
 filename: index
 ---
@@ -35,4 +35,4 @@ The Orthus cluster currently consists of a frontend (User Interface) node, one c
 
 ---
 <img align="left" width="400" height="185" src="https://mojoblak.irb.hr/s/gifFHzfM9gwNxx9/download/HRZZ-eng.jpg">
-<img align="right" style="width=50%" src="https://mojoblak.irb.hr/s/9CPc6HojToCyxet/download/IRB-logo.jpg">
+<img align="right" width="215" height="150" src="https://mojoblak.irb.hr/s/9CPc6HojToCyxet/download/IRB-logo.jpg">
