@@ -4,6 +4,11 @@ layout: template
 filename: index
 ---
 
+## Content
+1. [About the cluster](#about-the-cluster)
+2. [Technical details](#technical-details)
+3. [Contacts](#contacts)
+
 ## About the cluster 
 Orthus cluster is small experimental and development cluster located at the Centre for Informatics and Computing and the Division of Electronics at the Ruđer Bošković Institute in Zagreb, Croatia.
 The cluster is acquired via two National Science Foundation projects:
@@ -12,7 +17,7 @@ The cluster is acquired via two National Science Foundation projects:
 - [HRZZ-UIP-2020-02-1623](https://www.irb.hr/eng/Divisions/Division-of-Electronics/Laboratory-for-Machine-Learning-and-Knowledge-Representation/Projects/Exploring-Interactions-Between-Regulatory-Variants-in-Human-Disease-Context) "Exploring Interactions Between Regulatory Variants in Human Disease Context"
 
 
-## Technical characteristics
+## Technical details
 
 The Orthus cluster currently consists of a frontend (User Interface) node, one compute node and a storage node.
 
@@ -32,6 +37,13 @@ The Orthus cluster currently consists of a frontend (User Interface) node, one c
 3. **Network infrastructure**
     - Mikrotik CRS312-4C+8XG-RM
     - 12 x 10 Gb/s ports
+
+## Contacts
+
+Location: Ruđer Bošković Institute, Croatia, Zagreb
+
+
+Email: [orthus-info@irb.hr](mailto:orthus-info@irb.hr)
 
 ---
 <img align="left" width="400" height="185" src="https://mojoblak.irb.hr/s/gifFHzfM9gwNxx9/download/HRZZ-eng.jpg">
