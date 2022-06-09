@@ -27,7 +27,7 @@ For scheduling and maintainig the jobs on Orthus cluster the **[SGE](http://star
 The available file systems on Orthus are combination of local (per node) file systems and mounted (NFS) storage locations.
 The table below gives an overview over the available file systems:
 
-| Mount point | Accesibility | Description |
+| Mount point | Accessibility | Description |
 |-------------|--------------|-------------|
 | /home | Login+Compute | NFS user's home folder visible on frontend and compute nodes |
 | /apps | Login+Compute | NFS shared folder in which packages are installed |
@@ -38,7 +38,7 @@ The table below gives an overview over the available file systems:
 The _/storage_ folder is used for storing and sharing large amount of data between the user. To each registered project a shared  folder is created in which members of the project can share data.
 
 ### Scratch folder
-The _/scratch_ folder is a fast (SSD) disc attached to the compute node. The main purpose of the folder is to be a working folder for all active jobs on the compute node. Also, the users can store their temporary data. 
+The _/scratch_ folder is a fast (SSD) disc attached to the compute node. The main purpose of the folder is to be a working folder for all active jobs on the compute node. Also, the users can store their temporary data.
 
 **==CAUTION== All the data in the /scratch folder will be deleted once the job is finished!**
 
