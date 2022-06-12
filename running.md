@@ -76,13 +76,13 @@ The SGE language is used to describe jobs, and the job description file (start s
 
 The structure of the job start script (file: _my_job.sh_):
 ```
-    #!/bin/bash
+#!/bin/bash
 
-    #$ -<parameter1> <value1>
-    #$ -<parameter2> <value2>
+#$ -<parameter1> <value1>
+#$ -<parameter2> <value2>
 
-    <command1>
-    <command2>
+<command1>
+<command2>
 ```
 
 The job is submitted to cluster for execution by running the command:
@@ -109,14 +109,14 @@ The basic SGE parameters for describing the jobs are:
 
 An example of a simple script to start a serial job (requiring only 1 CPU core) which prints the _data_ and _hostname_:
 ```
-    #!/bin/bash
+#!/bin/bash
 
-    #$ -N example-serial
-    #$ -o example-serial.out
-    #$ -e example-serial.err
+#$ -N example-serial
+#$ -o example-serial.out
+#$ -e example-serial.err
 
-    data
-    hostname
+data
+hostname
 ```
 ### Interactive jobs
 
@@ -136,15 +136,15 @@ qrsh -pe mpi 4 -V -display 10.1.1.1:0.0 rstudio
 To start parallel jobs it is necessary to specify the desire parallel environment and the number of CPU cores required for the application. An example of the script requiring _mpi_ parallel environment with 12 compute cores and running a simple _Hello_World_ program:
 
 ```
-    #!/bin/bash
-    
-    #$ -N example-mpi
-    #$ -o example-mpi.out
-    #$ -e example-mpi.err
-    #$ -pe mpi 12
-    #$ -V
-    
-    mpirun -np 12 ./hello_world.exe
+#!/bin/bash
+
+#$ -N example-mpi
+#$ -o example-mpi.out
+#$ -e example-mpi.err
+#$ -pe mpi 12
+#$ -V
+
+mpirun -np 12 ./hello_world.exe
 ```
 
 The concrete script requires that an MPI package is loaded (using [Spack](https://hybridscale.github.io/orthus/applications#loading-and-unloading-packages)) in the user's environment before the job is submitted.
@@ -153,20 +153,20 @@ The concrete script requires that an MPI package is loaded (using [Spack](https:
 
 The GPU jobs are type of parallel jobs that can use one or more CPU core and 1 or more GPUs. An example of a GPU job script that requires 1 CPU core and 2 GPU devices and prints the visible devices allocated to the job and status of the devices.
 ```
-    #!/bin/bash
+#!/bin/bash
 
-    #$ -N test-gpu
-    #$ -o test_gpu_$JOB_ID.out
-    #$ -e test_gpu_$JOB_ID.err
-    #$ -cwd
-    #$ -pe gpu 1
-    #$ -l gpu=2
-    #$ -V
+#$ -N test-gpu
+#$ -o test_gpu_$JOB_ID.out
+#$ -e test_gpu_$JOB_ID.err
+#$ -cwd
+#$ -pe gpu 1
+#$ -l gpu=2
+#$ -V
 
-    export `cat $TMPDIR/gpus`
+export `cat $TMPDIR/gpus`
 
-    echo "CUDA_VISIBLE_DEVICES = $CUDA_VISIBLE_DEVICES"
+echo "CUDA_VISIBLE_DEVICES = $CUDA_VISIBLE_DEVICES"
 
-    nvidia-smi
+nvidia-smi
 ```
 To succesfully run the job on the allocated GPU devices (and to avoid different users to run on the same GPU devices at the same time) the command **`export 'cat $TMPDIR/gpus'`** has to be executed before any other command in the submission script.
