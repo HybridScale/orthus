@@ -107,7 +107,7 @@ The basic SGE parameters for describing the jobs are:
 
 ### Serial jobs
 
-An example of the a simple script to start a serial job (requiring only 1 CPU core) which prints the _data_ and _hostname_:
+An example of a simple script to start a serial job (requiring only 1 CPU core) which prints the _data_ and _hostname_:
 ```
     #!/bin/bash
 
@@ -150,3 +150,23 @@ To start parallel jobs it is necessary to specify the desire parallel environmen
 The concrete script requires that an MPI package is loaded (using [Spack](https://hybridscale.github.io/orthus/applications#loading-and-unloading-packages)) in the user's environment before the job is submitted.
 
 ### GPU jobs
+
+The GPU jobs are type of parallel jobs that can use one or more CPU core and 1 or more GPUs. An example of a GPU job script that requires 1 CPU core and 2 GPU devices and prints the visible devices allocated to the job and status of the devices.
+```
+    #!/bin/bash
+
+    #$ -N test-gpu
+    #$ -o test_gpu_$JOB_ID.out
+    #$ -e test_gpu_$JOB_ID.err
+    #$ -cwd
+    #$ -pe gpu 1
+    #$ -l gpu=2
+    #$ -V
+
+    export `cat $TMPDIR/gpus`
+
+    echo "CUDA_VISIBLE_DEVICES = $CUDA_VISIBLE_DEVICES"
+
+    nvidia-smi
+```
+To succesfully run the job on the allocated GPU devices (and to avoid different users to run on the same GPU devices at the same time) the command **`export 'cat $TMPDIR/gpus'`** has to be executed before any other command in the submission script.
