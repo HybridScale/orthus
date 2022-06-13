@@ -44,12 +44,12 @@ A parallel environment is a mechanism in SGE that allows multiple processor core
 
 To request more than 1 processor core, add in your submission script option:
 ```
-#$ <parallel environment> <number-of-cores>
+#$ -pe <parallel environment> <number-of-cores>
 ```
 
 For example:
 ```
-#$ mpi 12
+#$ -pe mpi 12
 ```
 
 Will request for 12 processor core using mpi parallel environment. In practice it is not required to explicitly set a required queue, only the parallel environment.
