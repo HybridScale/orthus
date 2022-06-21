@@ -17,6 +17,10 @@ filename: running
     - [Parallel](#parallel-jobs)
     - [Interactive](#interactive-jobs)
     - [GPU](#gpu-jobs)
+4. [Monitoring and management of jobs](#monitoring-and-management-of-jobs)
+    - [Host information](#host-information)
+    - [Job management](#job-management)
+    - [Get statistics of the finished job](#get-statistics-of-the-finished-job)
 
 ## Introduction
 
@@ -170,3 +174,65 @@ echo "CUDA_VISIBLE_DEVICES = $CUDA_VISIBLE_DEVICES"
 nvidia-smi
 ```
 To succesfully run the job on the allocated GPU devices (and to avoid different users to run on the same GPU devices at the same time) the command **`export 'cat $TMPDIR/gpus'`** has to be executed before any other command in the submission script.
+
+## Monitoring and management of jobs
+
+### Host information
+
+To print the number of procesors, computing cores and amount of the main memory per node use the command
+```
+qhost
+```
+
+<!The below command prints the values of available resources per compute node:
+```
+qhost -F vendor,scratch,mmoery
+```>
+
+### Job management
+It is possible to manage the jobs even after it is submitted.
+While the jobs is still in the waiting queueu, it is possible to temporarily suspend its execution with the command
+```
+qhold <JobID>
+```
+The suspended job can be returned to the waiting queueu with:
+```
+qrls <JobID>
+```
+A better control over the job execution is possible to have with the command **qmod**. The command can temporarily stop active jobs by sending the *SIGSTOP* signal. The job will enter in inactive state (T) but will not free the allocated resources (memory, CPUs). With the command it is also possible to save current states of the jobs on disc (*checkpointing*= for the jobs that have this functionality. Furthermore, the with **qmod** the user can stop an active jobs and return it to the submitting queueu. The specific parameters are:
+```
+-c : save the state of the job.
+
+-f : force the execution of the command (useful when returning into the submission queueu the jobs that are run with  *-r n*).
+
+-r : stop the running job and return it the submission queue.
+
+-s : stop/suspend the execution of the running job.
+
+-us : continue the execution of the previously stopped/suspended job.
+
+### Get statistics of the finished jobs
+
+To get the information of the finished jobs use the command:
+```
+qacct <parameters>
+```
+
+The most common examples of using the command is:
+```
+qacct -j <JobID>
+```
+which will print all the information of the finished job with the given ID.
+
+The other options are:
+```
+-j <JobID> : detailed description of the given job
+
+-h <hostname> : statistics of usage for a specific computing node
+
+-q <queue> : statistics for a specific queue
+
+-i <username> : resource usage for a user
+
+-pe <parallel_environment> : statistics of usage for a parallel environment
+```
