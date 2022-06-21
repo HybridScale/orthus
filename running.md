@@ -10,16 +10,16 @@ filename: running
 2. [File system](#file-system)
     - [Storage folder](#storage-folder)
     - [Scratch folder](#scratch-folder)
-2. [Running job](#running-jobs)
+3. [Running job](#running-jobs)
     - [Job description](#job-description)
-    - [SGE environment variables](#sge-environment-variables)
-3. [Types of jobs](#types-of-jobs)
+   - [SGE environment variables](#sge-environment-variables)
+4. [Types of jobs](#types-of-jobs)
     - [Serial](#serial-jobs)
     - [Interactive](#interactive-jobs)
     - [Array](#array-jobs)
     - [Parallel](#parallel-jobs)
     - [GPU](#gpu-jobs)
-4. [Monitoring and management of jobs](#monitoring-and-management-of-jobs)
+5. [Monitoring and management of jobs](#monitoring-and-management-of-jobs)
     - [Host information](#host-information)
     - [Job management](#job-management)
     - [Get statistics of the finished job](#get-statistics-of-the-finished-job)
@@ -164,7 +164,7 @@ The value of *`<start>`* is the identifier of the first task, the *`<end>`* is i
 
 #### Example of usage
 
-1. An example of the script that starts 10 serial jobs:
+An example of the script that starts 10 serial jobs:
 
 ```
 #! /bin/bash
@@ -175,12 +175,12 @@ The value of *`<start>`* is the identifier of the first task, the *`<end>`* is i
 #$ -j y
 #$ t 1:10
 
-./myexec inputFile.$SGE_TASK_ID
+myexec inputFile.$SGE_TASK_ID
 ```
-
-2. An example of the script starting 10 parallel jobs:
+    
+An example of the script starting 10 parallel jobs:
 ```
-#! /bin/bash
+    #! /bin/bash
 
 #$ -N job_array_parallel
 #$ -cwd
