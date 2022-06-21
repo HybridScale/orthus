@@ -14,8 +14,9 @@ filename: running
     - [Job description](#job-description)
 3. [Types of jobs](#types-of-jobs)
     - [Serial](#serial-jobs)
-    - [Parallel](#parallel-jobs)
     - [Interactive](#interactive-jobs)
+    - [Array](#array-jobs)
+    - [Parallel](#parallel-jobs)
     - [GPU](#gpu-jobs)
 4. [Monitoring and management of jobs](#monitoring-and-management-of-jobs)
     - [Host information](#host-information)
@@ -107,11 +108,18 @@ The basic SGE parameters for describing the jobs are:
     -V: SGE will transfer all current environment variable to the job
 ```
 
+### SGE environment variables
+Inside the submission script it is possible to use SGE environment variables. Some of the most commonly used are:
+```
+$TMPDIR :  name of the directory in which the temporarily files are stored (e.g. /scratch)
+$JOB_ID
+```
+
 ## Types of jobs
 
 ### Serial jobs
 
-An example of a simple script to start a serial job (requiring only 1 CPU core) which prints the _data_ and _hostname_:
+An example of a simple script to start a serial job (requiring only 1 CPU core) which prints the current _date_ and _hostname_ of the computing host where the job is executed:
 ```
 #!/bin/bash
 
@@ -119,7 +127,7 @@ An example of a simple script to start a serial job (requiring only 1 CPU core) 
 #$ -o example-serial.out
 #$ -e example-serial.err
 
-data
+date
 hostname
 ```
 ### Interactive jobs
@@ -133,6 +141,44 @@ For example, to run a parallel interactive job that requires _RStudio_ package a
 ```
 spack load RStudio
 qrsh -pe mpi 4 -V -display 10.1.1.1:0.0 rstudio
+```
+### Array jobs
+SGE enables multiple submissions of the same job, called parametric jobs or an array of jobs. Each job inside of the array of jobs is called a *task* and has its unique identifier.
+
+At the submission time the user has to specific the value range of the identifier using the parameter **-t**:
+```
+-t  <start>:<end>:<step>
+```
+The value of *<start>* is the identifier of the first task, the *<end>* is identifier of the last task, and the *<step>* is the increment value for the next task.  The idetifier of each task is stored in the environemt variable **$SGE_TASK_ID**. Task can be both serial or parallel jobs.
+
+#### Example of usage
+
+1. An example of the script that starts 10 serial jobs:
+```
+#! /bin/bash
+
+#$ -N job_array_serial
+#$ -cwd
+#$ -o output/
+#$ -j y
+#$ t 1:10
+
+./myexec inputFile.$SGE_TASK_ID
+```
+
+2. An example of the script starting 10 parallel jobs:
+```
+#! /bin/bash
+
+#$ -N job_array_parallel
+#$ -cwd
+#$ -o output/
+#$ -j y
+#$ -pe mpi 10
+#$ t 1:10
+
+mpirun -np 10 ./myexec inputFile.$SGE_TASK_ID
+
 ```
 
 ### Parallel jobs
@@ -184,11 +230,6 @@ To print the number of procesors, computing cores and amount of the main memory 
 qhost
 ```
 
-<!The below command prints the values of available resources per compute node:
-```
-qhost -F vendor,scratch,mmoery
-```>
-
 ### Job management
 It is possible to manage the jobs even after it is submitted.
 While the jobs is still in the waiting queueu, it is possible to temporarily suspend its execution with the command
@@ -210,6 +251,7 @@ A better control over the job execution is possible to have with the command **q
 -s : stop/suspend the execution of the running job.
 
 -us : continue the execution of the previously stopped/suspended job.
+```
 
 ### Get statistics of the finished jobs
 
@@ -217,7 +259,6 @@ To get the information of the finished jobs use the command:
 ```
 qacct <parameters>
 ```
-
 The most common examples of using the command is:
 ```
 qacct -j <JobID>
