@@ -12,6 +12,7 @@ filename: running
     - [Scratch folder](#scratch-folder)
 2. [Running job](#running-jobs)
     - [Job description](#job-description)
+    - [SGE environment variables](#sge-environment-variables)
 3. [Types of jobs](#types-of-jobs)
     - [Serial](#serial-jobs)
     - [Interactive](#interactive-jobs)
@@ -164,6 +165,7 @@ The value of *`<start>`* is the identifier of the first task, the *`<end>`* is i
 #### Example of usage
 
 1. An example of the script that starts 10 serial jobs:
+
 ```
 #! /bin/bash
 
