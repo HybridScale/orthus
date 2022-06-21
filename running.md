@@ -111,8 +111,18 @@ The basic SGE parameters for describing the jobs are:
 ### SGE environment variables
 Inside the submission script it is possible to use SGE environment variables. Some of the most commonly used are:
 ```
-$TMPDIR :  name of the directory in which the temporarily files are stored (e.g. /scratch)
-$JOB_ID
+$TMPDIR :  The absolute path to the job's temporary working directory (e.g. /scratch).
+$JOB_ID : A unique identifier assigned by the SGE when the job was submitted.
+$SGE_TASK_ID : The task identifier in the array job represented by this task.
+$SGE_O_HOST : The host from which the job was submitted.
+$SGE_O_PATH : The content of the PATH environment variable in the context of the job submission command.
+$SGE_O_WORKDIR : The working directory of the job submission command.
+$SGE_STDOUT_PATH : The path name of the file to which the standard output stream of the job is diverted.
+$SGE_STDERR_PATH : The path name of the file to which the standard error stream of the job is diverted.
+$HOSTNAME : The host name of the node on which the job is running.
+$JOB_NAME : The job name, which is built from the file name provided with the qsub command
+$PE_HOSTFILE : The path of a file that contains the definition of the virtual parallel machine that is assigned to a parallel job by the grid engine system. This variable is used for parallel jobs only.
+$QUEUE : The name of the queue in which the job is running.
 ```
 
 ## Types of jobs
@@ -149,7 +159,7 @@ At the submission time the user has to specific the value range of the identifie
 ```
 -t  <start>:<end>:<step>
 ```
-The value of *<start>* is the identifier of the first task, the *<end>* is identifier of the last task, and the *<step>* is the increment value for the next task.  The idetifier of each task is stored in the environemt variable **$SGE_TASK_ID**. Task can be both serial or parallel jobs.
+The value of *`<start>`* is the identifier of the first task, the *`<end>`* is identifier of the last task, and the *`<step>`* is an increment value for the next task.  The idetifier of each task is stored in the environemt variable **$SGE_TASK_ID**. Task can be both serial or parallel jobs.
 
 #### Example of usage
 
