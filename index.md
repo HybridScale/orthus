@@ -43,7 +43,10 @@ The Orthus cluster currently consists of a frontend (User Interface) node, one c
 Location: Ruđer Bošković Institute, Croatia, Zagreb
 
 
-Email: [orthus-info@irb.hr](mailto:orthus-info@irb.hr)
+### Emails
+General information: [orthus-info@irb.hr](mailto:orthus-info@irb.hr)
+
+For technical question, user support and requests to install new applications: [orthus-users@irb.hr](mailto:orthus-users@irb.hr) (only for registered users)
 
 ---
 <img align="left" width="400" height="185" src="https://mojoblak.irb.hr/s/gifFHzfM9gwNxx9/download/HRZZ-eng.jpg">

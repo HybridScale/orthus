@@ -173,24 +173,23 @@ An example of the script that starts 10 serial jobs:
 #$ -cwd
 #$ -o output/
 #$ -j y
-#$ t 1:10
+#$ -t 1:10
 
 myexec inputFile.$SGE_TASK_ID
 ```
     
 An example of the script starting 10 parallel jobs:
 ```
-    #! /bin/bash
+#! /bin/bash
 
 #$ -N job_array_parallel
 #$ -cwd
 #$ -o output/
 #$ -j y
 #$ -pe mpi 10
-#$ t 1:10
+#$ -t 1:10
 
 mpirun -np 10 ./myexec inputFile.$SGE_TASK_ID
-
 ```
 
 ### Parallel jobs
