@@ -155,11 +155,11 @@ spack env create -d /path/to/directory/<env-name>
 ```
 
 The folder with the environment name will be stored on the given path (if not provided, the environment will be created in the current directory).
-```
+
 To activate the environment run:
 ```
 spack env activate -d -p /path/to/directory/<env-name>
-˙˙`
+```
 
 Deactivate environment by typing:
 ```
