@@ -210,6 +210,37 @@ mpirun -np 12 ./hello_world.exe
 
 The concrete script requires that an MPI package is loaded (using [Spack](https://hybridscale.github.io/orthus/applications#loading-and-unloading-packages)) in the user's environment before the job is submitted.
 
+#### Running MPI with multiple OpenMP threads
+When running hybrid parallel applications that combine both MPI and OpenMP (thread) parallelism, you need to bind the MPI processes and ensure that the associated OpenMP threads are bound to cores on the same processors. 
+In this way, you can observe a significant speed-up in execution.
+
+First, define the number of OpenMP threads for the application (per process) and set the correct OpenMP binding policy
+ 
+```
+export OMP_PROC_BIND=true
+export OMP_NUM_THREADS=<number-of-threads>
+```
+
+When starting the parallel (MPI) application, the following flags ensure that each MPI process is assigned to a single socket (i.e. a physical processor) and that all its threads are bound to the same processor.
+
+```
+mpirun --map-by socket:pe=<number-of-threads> --bind-to core ./your-mpi-application <application arguments>
+```
+
+An example of an application with 4 MPI processes and 32 threads per process. Note that the Orthus node has 48 physical cores, so we will run 12 OpenMP threads per MPI process.
+
+```
+#$ -N test-mpi-openmp-job
+#$ -o test.out
+#$ -e test.err
+#$ -pe mpi 4
+
+export OMP_PROC_BIND=true
+export OMP_NUM_THREADS=12
+
+mpirun -np $NSLOTS --map-by socket:pe=${OMP_NUM_THREADS} --bind-to core ./<my-application> <application-parameters>
+``` 
+
 ### GPU jobs
 
 The GPU jobs are type of parallel jobs that can use one or more CPU core and 1 or more GPUs. An example of a GPU job script that requires 1 CPU core and 2 GPU devices and prints the visible devices allocated to the job and status of the devices.
