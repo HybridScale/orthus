@@ -18,6 +18,7 @@ filename: running
     - [Interactive](#interactive-jobs)
     - [Array](#array-jobs)
     - [Parallel](#parallel-jobs)
+        - [MPI + OpenMP](#mpi-with-openmp-threads)
     - [GPU](#gpu-jobs)
 5. [Monitoring and management of jobs](#monitoring-and-management-of-jobs)
     - [Host information](#host-information)
@@ -210,7 +211,7 @@ mpirun -np 12 ./hello_world.exe
 
 The concrete script requires that an MPI package is loaded (using [Spack](https://hybridscale.github.io/orthus/applications#loading-and-unloading-packages)) in the user's environment before the job is submitted.
 
-#### Running MPI with multiple OpenMP threads
+#### MPI with OpenMP threads
 When running hybrid parallel applications that combine both MPI and OpenMP (thread) parallelism, you need to bind the MPI processes and ensure that the associated OpenMP threads are bound to cores on the same processors. 
 In this way, you can observe a significant speed-up in execution.
 
