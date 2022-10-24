@@ -104,7 +104,7 @@ The list of compilers and their corresponding Spack packages are listed in the t
 
 | Version               | package                          |
 |-----------------------|----------------------------------|
-| GCC 4.8.5             |                             |
+| GCC 4.8.5             |                                  |
 | GCC 9.4.0             | gcc@9.4.0                        |
 | GCC 11.2.0            | gcc@11.2.0                       |
 | Intel OneAPI 2022.0.1 | intel-openapi-compilers@2022.0.1 |
@@ -112,24 +112,36 @@ The list of compilers and their corresponding Spack packages are listed in the t
 
 ### MPI
 
+The list of the available MPI versions:
+
+| Variant        | Version   | CUDA support | UCX |
+|----------------|-----------|--------------|-----|
+| MPICH          | 4.0.2     | Yes          | Yes |
+| OpenMPI        | 4.1.2     | Yes          | Yes |
+| OpenMPI        | 4.1.3     | No           | No  |
+
+
 ### Users's applications
 
-List of installed user's applications:
+List of installed user's applications (multiple versions are possible):
 
-- PyTorch: 1.11.0
-- R: 4.1.2
-- RStudio: 1.4.1717
-- Python: 3.9.10
-- OpenMPI: 4.1.2, 4.1.3
-- Octave: 7.1.0
-- Magma: 2.6.1
-- Miniconda3: 4.10.3
-- git: 2.31.1
-- cuda: 11.6.0
-- boost: 1.78.0
-- cmake: 3.22.0
-- Intel OneAPI MKL: 2022.0.1
-- Bowtie2: 2.4.2
+- [Boost](https://www.boost.org/): 1.78.0
+- [Bowtie2](https://bowtie-bio.sourceforge.net/bowtie2/index.shtml): 2.4.2
+- [CMake](https://cmake.org/): 3.22.0
+- [CUDA](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html): 11.6.0
+- [git](https://git-scm.com/about): 2.31.1
+- [Intel OneAPI MKL](https://www.intel.com/content/www/us/en/develop/documentation/oneapi-programming-guide/top/api-based-programming/intel-oneapi-math-kernel-library-onemkl.html): 2022.0.1
+- [Magma](https://icl.utk.edu/magma/): 2.6.1
+- [Miniconda3](https://docs.conda.io/en/latest/miniconda.html): 4.10.3
+- [Octave](https://octave.org): 7.1.0
+- [OpenJDK](https://openjdk.org/): 11.0.12_7
+- [OpenMPI](https://www.open-mpi.org/): 4.1.2, 4.1.3
+- [Python](https://www.python.org/): 3.9.10
+- [PyTorch](https://pytorch.org/): 1.11.0
+- [R](https://www.r-project.org/): 4.2.1
+- [R-Gviz](https://www.bioconductor.org/packages/release/bioc/html/Gviz.html): 1.40.1
+- [RStudio](https://www.rstudio.com/): 1.4.1717
+- [Slate](https://icl.utk.edu/slate/): 2021.05.02
 
 ## How to install new software
 
