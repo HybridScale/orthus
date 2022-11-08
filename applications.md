@@ -134,7 +134,7 @@ List of installed user's applications (multiple versions are possible):
 - [Magma](https://icl.utk.edu/magma/): 2.6.1
 - [Miniconda3](https://docs.conda.io/en/latest/miniconda.html): 4.10.3
 - [Octave](https://octave.org): 7.1.0
-- [OpenJDK](https://openjdk.org/): 11.0.12_7
+- [OpenJDK](https://openjdk.org/): 17.0.3 11.0.12
 - [OpenMPI](https://www.open-mpi.org/): 4.1.2, 4.1.3
 - [Python](https://www.python.org/): 3.9.10
 - [PyTorch](https://pytorch.org/): 1.11.0
