@@ -18,7 +18,7 @@ The cluster is acquired via two National Science Foundation projects:
 
 ## Technical details
 
-The Orthus cluster currently consists of a login node, one compute node and a storage node. Both the login and compute nodes run the Rocky Linux 9 as the OS, have [Slurm](https://slurm.schedmd.com/documentation.html) for resource management and job scheduling and [FreeIPA](https://www.freeipa.org/) for identity management / single sign-on. Additonally much of the HPC functionallity is proviced by the [OpenHPC](https://openhpc.community/) project. For information of software avalable on the cluster see the [applications and software section](applications.md) section and for running batch jobs see the [Job scheduling](running.md) section of this documentation. 
+The Orthus cluster currently consists of a login node, one compute node and a storage node. Both the login and compute nodes run the Rocky Linux 9 as the OS, have [Slurm](https://slurm.schedmd.com/documentation.html) for resource management and job scheduling and [FreeIPA](https://www.freeipa.org/) for identity management / single sign-on. Additonally much of the HPC functionallity is proviced by the [OpenHPC](https://openhpc.community/) project, specifically using [this](Install_guide.pdf) version of the OpenHPC installation guide. For information of software avalable on the cluster see the [applications and software section](applications.md) section and for running batch jobs see the [Job scheduling](running.md) section of this documentation. 
 
 1. **Compute node (GPU)**
     - 2 x Intel(R) Xeon(R) Gold 6240R CPU @ 2.40GHz

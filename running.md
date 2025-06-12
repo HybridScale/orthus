@@ -1,5 +1,10 @@
 ---
-title: Running jobs
+title: Job scheduling
+layout: template
+filename: running
+---
+---
+title: Job scheduling
 layout: template
 filename: running
 ---
@@ -10,24 +15,26 @@ filename: running
 2. [File system](#file-system)
     - [Storage folder](#storage-folder)
     - [Scratch folder](#scratch-folder)
-3. [Running job](#running-jobs)
+3. [Running jobs](#running-jobs)
     - [Job description](#job-description)
-   - [SGE environment variables](#sge-environment-variables)
+    - [Slurm environment variables](#slurm-environment-variables)
 4. [Types of jobs](#types-of-jobs)
-    - [Serial](#serial-jobs)
-    - [Interactive](#interactive-jobs)
-    - [Array](#array-jobs)
-    - [Parallel](#parallel-jobs)
+    - [Serial jobs](#serial-jobs)
+    - [Interactive jobs](#interactive-jobs)
+    - [Array jobs](#array-jobs)
+    - [Parallel jobs](#parallel-jobs)
         - [MPI + OpenMP](#mpi-with-openmp-threads)
-    - [GPU](#gpu-jobs)
+    - [GPU jobs](#gpu-jobs)
 5. [Monitoring and management of jobs](#monitoring-and-management-of-jobs)
     - [Host information](#host-information)
     - [Job management](#job-management)
-    - [Get statistics of the finished job](#get-statistics-of-the-finished-job)
+    - [Get statistics of finished jobs](#get-statistics-of-finished-jobs)
 
 ## Introduction
+ 
+The Orthus cluster uses **[Slurm](https://slurm.schedmd.com/overview.html)** (Simple Linux Utility for Resource Management) job scheduling system to enable users to run and administer batch compute jobs.
 
-For scheduling and maintainig the jobs on Orthus cluster the **[SGE](http://star.mit.edu/cluster/docs/0.93.3/guides/sge.html)** (Sun of Grid Engine) queuing system is used. 
+When you ssh to the Orthus cluster via `$ ssh orthus.cir.irb.hr` you are logging into a login node. When you submit a batch job with `sbatch`, the login node schedules your job to run on compute nodes. The login node has all the same software installed as the compute nodes.
 
 ## File system
 
@@ -38,285 +45,358 @@ The table below gives an overview over the available file systems:
 |-------------|--------------|-------------|
 | /home | Login+Compute | NFS user's home folder visible on frontend and compute nodes |
 | /apps | Login+Compute | NFS shared folder in which packages are installed |
-| /storage | Login+Compute | NFS shared folder for sharing
+| /storage | Login+Compute | NFS shared folder for sharing data |
 | /scratch | Compute | Local and fast (SSD) storage on each compute node |
 
 ### Storage folder
-The _/storage_ folder is used for storing and sharing large amount of data between the user. To each registered project a shared  folder is created in which members of the project can share data.
+The _/storage_ folder is used for storing and sharing large amounts of data between users. To each registered project a shared folder is created in which members of the project can share data.
 
 ### Scratch folder
-The _/scratch_ folder is a fast (SSD) disc attached to the compute node. The main purpose of the folder is to be a working folder for all active jobs on the compute node. Also, the users can store their temporary data.
+The _/scratch_ folder is a fast (SSD) disc attached to the compute node. The main purpose of the folder is to be a working folder for all active jobs on the compute node. Users can also store their temporary data here.
 
 **==CAUTION== All the data in the /scratch folder will be deleted once the job is finished!**
 
 ## Running jobs
 
-User's applications (in following text names *jobs*) are run/submitted via SGE and have to be described with the **start shell script**. Inside each shell script, before standard shell command, a special SGE command has to be defined that describe to the SGE the resources the job requires.
+Jobs are run/submitted via Slurm and have to be described with a **batch script**. Inside each script, before standard shell commands, special Slurm directives have to be defined that describe to Slurm the resources the job requires.
 
 To start a job run command:
-```
-qsub <SGE PARAMETERS> <name of the start script>
+```bash
+sbatch <name of the batch script>
 ```
 
-The command _qsub_ returns the job ID which can be used later for monitoring the status of the job.
+The command `sbatch` returns the job ID which can be used later for monitoring the status of the job:
 ```
-Your job <JobID> ("my_job") has been submitted
+Submitted batch job <JobID>
 ```
 
 Check the status of submitted jobs:
+```bash
+squeue
 ```
-qstat
-```
-which will list all the jobs submitted by the current user. To check the status of all jobs submitted by all users / particular user run:
-```
-qstat -u '*'
-qstat -u <username>
+which will list all jobs in the queue. To check only your jobs:
+```bash
+squeue -u $USER
 ```
 
-The possible states of the jobs are: r (running), p (pending), qw (queuing). 
+To see detailed information about a specific job:
+```bash
+scontrol show job <JobID>
+```
 
-A more detailed description on how to describe and monitor jobs can be found in the [documentation](https://wiki.srce.hr/display/RKI/Pokretanje+i+upravljanje+poslovima) of the [Isabella](https://www.srce.unizg.hr/isabella/) cluster at SRCE as both systems have the same queuing management.
+The possible states of jobs include: PD (pending), R (running), CG (completing), CD (completed), F (failed), CA (cancelled).
 
 ### Job description
 
-The SGE language is used to describe jobs, and the job description file (start script) is a standard shell script. The header of each script contains the SGE parameters that describe the job in details, followed by normal commands to execute user applications.
+Slurm batch scripts are standard shell scripts with special directives that describe the job requirements. The header of each script contains the Slurm parameters, followed by normal commands to execute user applications.
 
-The structure of the job start script (file: _my_job.sh_):
-```
+The structure of a job batch script (file: _my_job.sh_):
+```bash
 #!/bin/bash
 
-#$ -<parameter1> <value1>
-#$ -<parameter2> <value2>
+#SBATCH --<parameter1>=<value1>
+#SBATCH --<parameter2>=<value2>
 
 <command1>
 <command2>
 ```
 
-The job is submitted to cluster for execution by running the command:
+Here's a basic example batch script:
+```bash
+#!/bin/bash
+#SBATCH --job-name=test_job
+#SBATCH --output=test_job_%j.out
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:05:00
 
-```
-qsub my_job.sh
-```
-
-The basic SGE parameters for describing the jobs are:
-```
-    -N <job name>: name of the job that will be printed when checking the job status
-    -o <file name>: file to which the standard output will be redirected (the standard output to the terminal will be printed into this file)
-    -e <file name>: file to which the standard error messaages will be redirected
-    -cwd: define that the directory with the submission script is the working directory
-    -j y|n: enable joining standard output and error in the same file (default is: n)
-    -pe <parallel environment> <range>: define parallel jobs, name of the parallel environment and number of processors required
-    -q <queueu>: name of the queueu in which the job will be submitted
-    -V: SGE will transfer all current environment variable to the job
+echo "Job started at $(date)"
+echo "Running on host: $(hostname)"
+echo "CPU info:"
+lscpu | grep "Model name"
+echo "Memory info:"
+free -h
+echo "Sleeping for 30 seconds..."
+sleep 30
+echo "Job completed at $(date)"
 ```
 
-### SGE environment variables
-Inside the submission script it is possible to use SGE environment variables. Some of the most commonly used are:
+The job is submitted to the cluster for execution by running:
+
+```bash
+sbatch my_job.sh
 ```
-$TMPDIR :  The absolute path to the job's temporary working directory (e.g. /scratch).
-$JOB_ID : A unique identifier assigned by the SGE when the job was submitted.
-$SGE_TASK_ID : The task identifier in the array job represented by this task.
-$SGE_O_HOST : The host from which the job was submitted.
-$SGE_O_PATH : The content of the PATH environment variable in the context of the job submission command.
-$SGE_O_WORKDIR : The working directory of the job submission command.
-$SGE_STDOUT_PATH : The path name of the file to which the standard output stream of the job is diverted.
-$SGE_STDERR_PATH : The path name of the file to which the standard error stream of the job is diverted.
-$HOSTNAME : The host name of the node on which the job is running.
-$JOB_NAME : The job name, which is built from the file name provided with the qsub command
-$PE_HOSTFILE : The path of a file that contains the definition of the virtual parallel machine that is assigned to a parallel job by the grid engine system. This variable is used for parallel jobs only.
-$QUEUE : The name of the queue in which the job is running.
+
+The basic Slurm parameters for describing jobs are:
+```bash
+--job-name=<name>          # Name of the job
+--output=<filename>        # File for standard output
+--error=<filename>         # File for standard error
+--time=<time>              # Maximum runtime (e.g., 1:30:00 for 1.5 hours)
+--nodes=<count>            # Number of nodes required
+--ntasks=<count>           # Number of tasks (processes)
+--ntasks-per-node=<count>  # Tasks per node
+--cpus-per-task=<count>    # CPU cores per task
+--mem=<size>               # Memory per node (e.g., 4G, 1000M)
+--mem-per-cpu=<size>       # Memory per CPU core
+--partition=all            # Partition name (use "all")
+--gres=gpu:<count>         # GPU resources
+```
+
+### Slurm environment variables
+Inside the batch script it is possible to use Slurm environment variables. Some of the most commonly used are:
+```bash
+$SLURM_JOB_ID          # Unique job identifier
+$SLURM_JOB_NAME        # Job name
+$SLURM_SUBMIT_DIR      # Directory from which job was submitted
+$SLURM_JOB_NODELIST    # List of nodes assigned to job
+$SLURM_NTASKS          # Number of tasks
+$SLURM_CPUS_PER_TASK   # CPU cores per task
+$SLURM_PROCID          # Process rank
+$SLURM_LOCALID         # Local task ID on node
+$SLURM_ARRAY_JOB_ID    # Job array ID
+$SLURM_ARRAY_TASK_ID   # Task ID within job array
+$SLURM_TMPDIR          # Temporary directory (typically /scratch)
 ```
 
 ## Types of jobs
 
 ### Serial jobs
 
-An example of a simple script to start a serial job (requiring only 1 CPU core) which prints the current _date_ and _hostname_ of the computing host where the job is executed:
-```
+An example of a simple script to start a serial job (requiring only 1 CPU core) which prints some system information:
+```bash
 #!/bin/bash
 
-#$ -N example-serial
-#$ -o example-serial.out
-#$ -e example-serial.err
+#SBATCH --job-name=example-serial
+#SBATCH --output=example-serial.out
+#SBATCH --error=example-serial.err
+#SBATCH --partition=all
+#SBATCH --ntasks=1
+#SBATCH --time=00:10:00
 
-date
-hostname
+echo "Starting serial job at $(date)"
+echo "Running on node: $(hostname)"
+echo "Working directory: $(pwd)"
+
+# Your application commands here
+./my_serial_program
 ```
+
 ### Interactive jobs
 
-To start an interactive job, a `qrsh` command is required. The direct access to the command line of the worker node can be done simply by running:
-```
-qrsh
+To start an interactive job, use the `srun` command with the `--pty` flag. This gives you direct access to a compute node:
+```bash
+srun --pty bash
 ```
 
-For example, to run a parallel interactive job that requires _RStudio_ package and 4 processor cores:
+For example, to run an interactive job that requires 4 CPU cores for 2 hours:
+```bash
+srun --partition=all --ntasks=4 --time=02:00:00 --pty bash
 ```
-spack load RStudio
-qrsh -pe mpi 4 -V -display 10.1.1.1:0.0 rstudio
+
+For GUI applications, you may need to enable X11 forwarding:
+```bash
+srun --partition=all --ntasks=4 --time=02:00:00 --x11 --pty bash
 ```
+
 ### Array jobs
-SGE enables multiple submissions of the same job, called parametric jobs or an array of jobs. Each job inside of the array of jobs is called a *task* and has its unique identifier.
+Slurm enables multiple submissions of the same job with different parameters, called job arrays. Each job inside the array is called a *task* and has its unique identifier.
 
-At the submission time the user has to specific the value range of the identifier using the parameter **-t**:
+At submission time, specify the array range using the `--array` parameter:
+```bash
+--array=<start>-<end>:<step>
 ```
--t  <start>:<end>:<step>
-```
-The value of *`<start>`* is the identifier of the first task, the *`<end>`* is identifier of the last task, and the *`<step>`* is an increment value for the next task.  The idetifier of each task is stored in the environemt variable **$SGE_TASK_ID**. Task can be both serial or parallel jobs.
+
+The task identifier is stored in the environment variable **$SLURM_ARRAY_TASK_ID**. Tasks can be both serial or parallel jobs.
 
 #### Example of usage
 
-An example of the script that starts 10 serial jobs:
+An example script that starts 10 serial jobs, each processing a different input file:
 
-```
-#! /bin/bash
+```bash
+#!/bin/bash
 
-#$ -N job_array_serial
-#$ -cwd
-#$ -o output/
-#$ -j y
-#$ -t 1:10
+#SBATCH --job-name=job_array_serial
+#SBATCH --output=output/job_%A_%a.out
+#SBATCH --error=output/job_%A_%a.err
+#SBATCH --partition=all
+#SBATCH --ntasks=1
+#SBATCH --time=01:00:00
+#SBATCH --array=1-10
 
-myexec inputFile.$SGE_TASK_ID
+echo "Processing task $SLURM_ARRAY_TASK_ID"
+./myexec inputFile.$SLURM_ARRAY_TASK_ID
 ```
     
-An example of the script starting 10 parallel jobs:
-```
-#! /bin/bash
+An example script starting 10 parallel jobs:
+```bash
+#!/bin/bash
 
-#$ -N job_array_parallel
-#$ -cwd
-#$ -o output/
-#$ -j y
-#$ -pe mpi 10
-#$ -t 1:10
+#SBATCH --job-name=job_array_parallel
+#SBATCH --output=output/job_%A_%a.out
+#SBATCH --error=output/job_%A_%a.err
+#SBATCH --partition=all
+#SBATCH --ntasks=4
+#SBATCH --time=02:00:00
+#SBATCH --array=1-10
 
-mpirun -np 10 ./myexec inputFile.$SGE_TASK_ID
+echo "Running parallel task $SLURM_ARRAY_TASK_ID"
+srun ./myexec inputFile.$SLURM_ARRAY_TASK_ID
 ```
 
 ### Parallel jobs
 
-To start parallel jobs it is necessary to specify the desire parallel environment and the number of CPU cores required for the application. An example of the script requiring _mpi_ parallel environment with 12 compute cores and running a simple _Hello_World_ program:
+To start parallel jobs, specify the number of tasks and optionally the number of nodes. An example script requiring 12 compute cores and running a simple _Hello World_ MPI program:
 
-```
+```bash
 #!/bin/bash
 
-#$ -N example-mpi
-#$ -o example-mpi.out
-#$ -e example-mpi.err
-#$ -pe mpi 12
-#$ -V
+#SBATCH --job-name=example-mpi
+#SBATCH --output=example-mpi.out
+#SBATCH --error=example-mpi.err
+#SBATCH --partition=all
+#SBATCH --ntasks=12
+#SBATCH --time=01:00:00
 
-mpirun -np 12 ./hello_world.exe
+# Load required modules
+module load openmpi
+
+echo "Starting MPI job with $SLURM_NTASKS tasks"
+echo "Nodes allocated: $SLURM_JOB_NODELIST"
+
+srun ./hello_world.exe
 ```
 
-The concrete script requires that an MPI package is loaded (using [Spack](https://hybridscale.github.io/orthus/applications#loading-and-unloading-packages)) in the user's environment before the job is submitted.
+The script requires that an MPI package is loaded using the module system before the job is submitted.
 
 #### MPI with OpenMP threads
-When running hybrid parallel applications that combine both MPI and OpenMP (thread) parallelism, you need to bind the MPI processes and ensure that the associated OpenMP threads are bound to cores on the same processors. 
-In this way, you can observe a significant speed-up in execution.
+When running hybrid parallel applications that combine both MPI and OpenMP (thread) parallelism, you need to properly configure the resource allocation and thread binding to achieve optimal performance.
 
-First, define the number of OpenMP threads for the application (per process) and set the correct OpenMP binding policy
- 
+```bash
+#!/bin/bash
+
+#SBATCH --job-name=test-mpi-openmp
+#SBATCH --output=test.out
+#SBATCH --error=test.err
+#SBATCH --partition=all
+#SBATCH --nodes=1
+#SBATCH --ntasks=4
+#SBATCH --cpus-per-task=12
+#SBATCH --time=02:00:00
+
+# Set OpenMP environment variables
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+export OMP_PROC_BIND=close
+export OMP_PLACES=cores
+
+# Load required modules
+module load openmpi
+
+echo "Running hybrid MPI+OpenMP job"
+echo "MPI tasks: $SLURM_NTASKS"
+echo "OpenMP threads per task: $OMP_NUM_THREADS"
+
+srun --cpu-bind=cores ./my-hybrid-application
 ```
-export OMP_PROC_BIND=true
-export OMP_NUM_THREADS=<number-of-threads>
-```
-
-When starting the parallel (MPI) application, the following flags ensure that each MPI process is assigned to a single socket (i.e. a physical processor) and that all its threads are bound to the same processor.
-
-```
-mpirun --map-by socket:pe=<number-of-threads> --bind-to core ./your-mpi-application <application arguments>
-```
-
-An example of an application with 4 MPI processes and 32 threads per process. Note that the Orthus node has 48 physical cores, so we will run 12 OpenMP threads per MPI process.
-
-```
-#$ -N test-mpi-openmp-job
-#$ -o test.out
-#$ -e test.err
-#$ -pe mpi 4
-
-export OMP_PROC_BIND=true
-export OMP_NUM_THREADS=12
-
-mpirun -np $NSLOTS --map-by socket:pe=${OMP_NUM_THREADS} --bind-to core ./<my-application> <application-parameters>
-``` 
 
 ### GPU jobs
 
-The GPU jobs are type of parallel jobs that can use one or more CPU core and 1 or more GPUs. An example of a GPU job script that requires 1 CPU core and 2 GPU devices and prints the visible devices allocated to the job and status of the devices.
-```
+GPU jobs require special resource allocation using the `--gres` flag. An example GPU job script that requires 1 CPU core and 2 GPU devices:
+
+```bash
 #!/bin/bash
 
-#$ -N test-gpu
-#$ -o test_gpu_$JOB_ID.out
-#$ -e test_gpu_$JOB_ID.err
-#$ -cwd
-#$ -pe gpu 1
-#$ -l gpu=2
-#$ -V
+#SBATCH --job-name=test-gpu
+#SBATCH --output=test_gpu_%j.out
+#SBATCH --error=test_gpu_%j.err
+#SBATCH --partition=all
+#SBATCH --ntasks=1
+#SBATCH --gres=gpu:2
+#SBATCH --time=01:00:00
 
-export `cat $TMPDIR/gpus`
-
+echo "Job started at $(date)"
 echo "CUDA_VISIBLE_DEVICES = $CUDA_VISIBLE_DEVICES"
+echo "SLURM_JOB_GPUS = $SLURM_JOB_GPUS"
 
+# Display GPU information
 nvidia-smi
+
+# Load CUDA if needed
+module load cuda
+
+# Run your GPU application
+./my_gpu_program
 ```
-To succesfully run the job on the allocated GPU devices (and to avoid different users to run on the same GPU devices at the same time) the command **`export 'cat $TMPDIR/gpus'`** has to be executed before any other command in the submission script.
 
 ## Monitoring and management of jobs
 
 ### Host information
 
-To print the number of procesors, computing cores and amount of the main memory per node use the command
-```
-qhost
+To print information about nodes in the cluster:
+```bash
+sinfo                    # Show partition and node state information
+sinfo -N                 # Show node-oriented format
+scontrol show nodes      # Detailed node information
 ```
 
 ### Job management
-It is possible to manage the jobs even after it is submitted.
-While the jobs is still in the waiting queueu, it is possible to temporarily suspend its execution with the command
-```
-qhold <JobID>
-```
-The suspended job can be returned to the waiting queueu with:
-```
-qrls <JobID>
-```
-A better control over the job execution is possible to have with the command **qmod**. The command can temporarily stop active jobs by sending the *SIGSTOP* signal. The job will enter in inactive state (T) but will not free the allocated resources (memory, CPUs). With the command it is also possible to save current states of the jobs on disc (*checkpointing*= for the jobs that have this functionality. Furthermore, the with **qmod** the user can stop an active jobs and return it to the submitting queueu. The specific parameters are:
-```
--c : save the state of the job.
 
--f : force the execution of the command (useful when returning into the submission queueu the jobs that are run with  *-r n*).
+Jobs can be managed after submission using various Slurm commands:
 
--r : stop the running job and return it the submission queue.
-
--s : stop/suspend the execution of the running job.
-
--us : continue the execution of the previously stopped/suspended job.
+Cancel a job:
+```bash
+scancel <JobID>
 ```
 
-### Get statistics of the finished jobs
-
-To get the information of the finished jobs use the command:
+Cancel all your jobs:
+```bash
+scancel -u $USER
 ```
-qacct <parameters>
-```
-The most common examples of using the command is:
-```
-qacct -j <JobID>
-```
-which will print all the information of the finished job with the given ID.
 
-The other options are:
+Hold/suspend a job (prevent it from running):
+```bash
+scontrol hold <JobID>
 ```
--j <JobID> : detailed description of the given job
 
--h <hostname> : statistics of usage for a specific computing node
-
--q <queue> : statistics for a specific queue
-
--i <username> : resource usage for a user
-
--pe <parallel_environment> : statistics of usage for a parallel environment
+Release a held job:
+```bash
+scontrol release <JobID>
 ```
+
+Suspend a running job:
+```bash
+scontrol suspend <JobID>
+```
+
+Resume a suspended job:
+```bash
+scontrol resume <JobID>
+```
+
+### Get statistics of finished jobs
+
+To get information about finished jobs use the `sacct` command:
+```bash
+sacct                    # Show accounting information for your recent jobs
+sacct -j <JobID>         # Detailed info for specific job
+sacct -u <username>      # Jobs for specific user
+```
+
+For a quick efficiency report of a completed job:
+```bash
+seff <JobID>             # Shows CPU and memory efficiency
+```
+
+Common `sacct` usage examples:
+```bash
+# Detailed job information with custom format
+sacct -j <JobID> --format=JobID,JobName,State,ExitCode,CPUTime,MaxRSS
+
+# Jobs from a specific time period
+sacct --starttime=2024-01-01 --endtime=2024-01-31
+
+# Your jobs from today
+sacct -u $USER --starttime=today
+```
+
+The `sacct` command provides extensive information about completed jobs including runtime, memory usage, CPU efficiency, and exit codes, which is useful for optimizing future job submissions.
