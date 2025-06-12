@@ -2,11 +2,12 @@
 title: How to access
 layout: template
 filename: access
+order: 2
 ---
 
 **_The access to the cluster is possible only within the IRB network_**
 
-- Connecting from the IRB network - [Access from the RBI network](#access-from-the-rbi-network>).
+- Connecting from the IRB network - [Access from the RBI network](#access-from-the-rbi-network).
 - Connecting from the outside of the RBI network - [Access from outside the RBI network](#access-from-outside-the-rbi-network).
 
 <!--If you access the cluster from outside the RBI network you will first have to establish a VPN connection to RBI. Information on how to use VPN can be found [here](http://helpdesk.irb.hr/wiki/OpenVPN). Once the VPN is established, the cluster can be accessed following the instructions [Access from the RBI network](<#access-from-the-rbi-network>).-->

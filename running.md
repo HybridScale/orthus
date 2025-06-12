@@ -2,11 +2,7 @@
 title: Job scheduling
 layout: template
 filename: running
----
----
-title: Job scheduling
-layout: template
-filename: running
+order: 3
 ---
 
 ## Content

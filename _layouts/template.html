@@ -13,7 +13,8 @@
         <section class="page-header">
             <h1 class="project-name">ORTHUS documentation</h1>
             <h2 class="project-tagline"></h2>
-            {% for page in site.pages %}
+            {% assign sorted_pages = site.pages | sort: 'order' %}
+            {% for page in sorted_pages %}
                 <a href= {{ page.filename }} class="btn">{{ page.title }}</a>
             {% endfor %}
             <a href="https://github.com/HybridScale/orthus/tree/gh-pages" class="btn">View on GitHub</a>

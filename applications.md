@@ -2,11 +2,12 @@
 title: Software and Applications
 layout: template
 filename: applications
+order: 3
 ---
 
 ## Content
-1. [Overview](#Overview)
-2. [Lmod software modules](Lmod software modules)
+1. [Overview](#overview)
+2. [Lmod software modules](#lmod-software-modules)
    - [Basic Module Commands](#basic-module-commands)
    - [Understanding the Module Hierarchy](#understanding-the-module-hierarchy)
    - [Common Workflow](#common-workflow)
@@ -14,7 +15,7 @@ filename: applications
    - [Useful Tips](#useful-tips)
    - [Environment Variables](#environment-variables)
    - [Getting Help](#getting-help)
-3. [Charliecloud Containers](#Charliecloud Containers)
+3. [Charliecloud Containers](#charliecloud-containers)
     - [Key Features for Scientific Computing](#key-features-for-scientific-computing)
     - [Basic Workflow](#basic-workflow)
     - [Container Management](#container-management)
@@ -30,7 +31,7 @@ filename: applications
     - [Find applications and packages](#find-applications-and-packages)
     - [Loading and unloading packages](#loading-and-unloading-packages)
     - [Install using Spack](#install-using-spack)
-    - [Users's applications](#user's-applications)
+    - [Users's applications](#users-applications)
 
 ## Overview
 The Orthus cluster uses components from [OpenHPC](https://openhpc.community/) to provide much of the HPC functionality. The user interface to OpenHPC software system is provide by [Lmod](https://lmod.readthedocs.io/en/latest/), please see [this](https://openhpc.github.io/cloudwg/tutorials/sc20/exercise3.html) tutorial for more details. In addition the Lmod modules [Spack](https://spack.readthedocs.io/en/latest/) HPC package manager and the [Charliecloud](https://charliecloud.io/latest/) container system are also avalible on the cluster.
