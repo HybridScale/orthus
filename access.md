@@ -21,9 +21,9 @@ When first requesting access to the cluster the admin would have requested a pub
 
 The cluster can be access from the command line (Linux, Mac or Windows Linux Subsystem) with:
 
-```
+```bash
 ssh <username>@orthus.cir.irb.hr
-
+```
 ## Access from outside the RBI network
 
 If you access the cluster from outside the RBI network you will first have to establish a VPN connection to RBI. Information on how to use VPN can be found [here](http://helpdesk.irb.hr/wiki/OpenVPN). Once the VPN is established, the cluster can be accessed following the instructions in [Access from the RBI network](<##access-from-the-rbi-network>).
