@@ -386,7 +386,7 @@ Deactivate environment by typing:
 despacktivate
 ```
 
-### Users's applications
+### Users' applications
 
 List of installed user's applications (multiple versions are possible):
 
