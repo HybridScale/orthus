@@ -1,26 +1,294 @@
 ---
-title: Applications
+title: Software and Applications
 layout: template
 filename: applications
 ---
 
 ## Content
-
-1. [Spack](#spack)
+1. [Overview](#Overview)
+2. [Lmod software modules](Lmod software modules)
+   - [Basic Module Commands](#basic-module-commands)
+   - [Understanding the Module Hierarchy](#understanding-the-module-hierarchy)
+   - [Common Workflow](#common-workflow)
+   - [Module Collections](#module-collections)
+   - [Useful Tips](#useful-tips)
+   - [Environment Variables](#environment-variables)
+   - [Getting Help](#getting-help)
+3. [Charliecloud Containers](#Charliecloud Containers)
+    - [Key Features for Scientific Computing](#key-features-for-scientific-computing)
+    - [Basic Workflow](#basic-workflow)
+    - [Container Management](#container-management)
+    - [Running Applications](#running-applications)
+    - [Integration with Slurm](#integration-with-slurm)
+    - [Building Scientific Containers](#building-scientific-containers)
+    - [Performance Considerations](#performance-considerations)
+    - [Best Practices](#best-practices)
+    - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
+    - [Advanced Features](#advanced-features)
+    - [Documentation and Resources](#documentation-and-resources)
+4. [Spack](#spack)
     - [Find applications and packages](#find-applications-and-packages)
     - [Loading and unloading packages](#loading-and-unloading-packages)
+    - [Install using Spack](#install-using-spack)
+    - [Users's applications](#user's-applications)
 
-2. [Installed applications](#installed-applications)
-    - [Compilers](#compilers)
-    - [MPI](#mpi)
-    - [Users' applications](#users-applications)
-3. [How to install new software](#how-to-install-new-software)
-    - [System-wide installation](#system-wide-installation)
-    - [Local installation](#local-installation)
+## Overview
+The Orthus cluster uses components from [OpenHPC](https://openhpc.community/) to provide much of the HPC functionality. The user interface to OpenHPC software system is provide by [Lmod](https://lmod.readthedocs.io/en/latest/), please see [this](https://openhpc.github.io/cloudwg/tutorials/sc20/exercise3.html) tutorial for more details. In addition the Lmod modules [Spack](https://spack.readthedocs.io/en/latest/) HPC package manager and the [Charliecloud](https://charliecloud.io/latest/) container system are also avalible on the cluster.
+
+## Lmod Environment Modules
+
+OpenHPC uses Lmod to manage software environments. Lmod provides a hierarchical module system that automatically manages dependencies and conflicts between different compilers, MPI libraries, and applications. You can see the openHPC package manifest in the [installation guides](Install_guide.pdf#page=36) for an overview of software avalable.
+
+### Basic Module Commands
+
+```bash
+# List currently loaded modules
+module list
+ml list                    # Short form
+
+# Show all available modules
+module avail
+ml av                      # Short form
+
+# Load a module
+module load gcc
+ml gcc                     # Short form
+
+# Unload a module
+module unload gcc
+ml -gcc                    # Short form with minus sign
+
+# Get help for a module
+module help gcc
+module whatis gcc          # Brief description
+```
+
+### Understanding the Module Hierarchy
+
+OpenHPC organizes software in a three-tier hierarchy:
+
+1. **Core modules** - Basic tools and compilers (gcc, intel, etc.)
+2. **Compiler-dependent** - Libraries built with specific compilers
+3. **MPI-dependent** - Applications requiring both compiler and MPI
+
+```bash
+# Load a compiler to see compiler-dependent modules
+ml gcc
+ml av                      # Shows additional modules now available
+
+# Load MPI to see MPI-dependent applications  
+ml openmpi
+ml av                      # Shows even more modules
+```
+
+### Common Workflow
+
+```bash
+# Typical development environment setup
+ml gcc                     # Load compiler
+ml openmpi                 # Load MPI library
+ml boost                   # Load libraries as needed
+ml list                    # Verify loaded modules
+
+# Switch to different compiler (automatic cleanup)
+ml intel                   # Lmod swaps gcc→intel, rebuilds stack
+```
+
+### Module Collections
+
+Save and restore entire module environments:
+
+```bash
+# Save current modules as default collection
+module save
+
+# Save with custom name
+module save myproject
+
+# Restore saved collection
+module restore
+module restore myproject
+
+# List saved collections
+module savelist
+```
+
+### Useful Tips
+
+- Use `ml` instead of `module` - it's shorter and context-aware
+- Lmod automatically handles conflicts and dependencies
+- Module names are case-sensitive
+- Use tab completion for module names
+- Check `module help <name>` for module-specific usage notes
+
+### Environment Variables
+
+Key variables set by OpenHPC modules:
+- `$CC` - C compiler
+- `$CXX` - C++ compiler  
+- `$FC` - Fortran compiler
+- `$MPICC` - MPI C compiler wrapper
+
+### Getting Help
+
+```bash
+module --help              # Full Lmod help
+module spider <name>       # Search for modules containing 'name'
+module keyword <term>      # Search module descriptions
+```
+
+## Charliecloud Containers
+
+Charliecloud is an unprivileged container runtime designed for high-performance computing that enables user-defined software stacks (UDSS). It enables unprivileged container execution on HPC systems while maintaining performance and security. For complete documentation, see the [official Charliecloud documentation](https://charliecloud.io/latest/).
+
+### Key Features for Scientific Computing
+
+- **Unprivileged execution** - No root required on compute nodes
+- **HPC-optimized** - Native performance with minimal overhead
+- **MPI support** - Full integration with HPC message passing
+- **GPU acceleration** - CUDA support
+
+### Basic Workflow
+
+```bash
+# 1. Pull or build image
+ch-image pull ubuntu:20.04               # Pull from registry
+# OR
+ch-image build -t myapp .                # Build from Dockerfile
+
+# 2. Convert to Charliecloud format
+ch-convert ubuntu:20.04 /path/to/images/
+# OR
+ch-convert myapp /path/to/images/
+
+# 3. Run on compute nodes
+ch-run /path/to/images/ubuntu+20.04 -- /bin/bash
+```
+
+### Container Management
+
+```bash
+# List available images
+ch-image list
+
+# Pull from registry
+ch-image pull ubuntu:20.04
+ch-image pull nvcr.io/nvidia/pytorch:22.03-py3
+
+# Build from Dockerfile
+ch-image build -t mycode:latest .
+
+# Convert and manage
+ch-convert mycode:latest ./images/
+ls ./images/
+```
+
+### Running Applications
+
+```bash
+# Interactive shell
+ch-run ./images/mycode -- /bin/bash
+
+# Execute specific command
+ch-run ./images/mycode -- python script.py
+
+# With bind mounts
+ch-run -b /scratch:/scratch ./images/mycode -- ./myapp
+
+# MPI applications
+mpirun ch-run ./images/mycode -- ./mpi_program
+```
+
+### Integration with Slurm
+
+```bash
+#!/bin/bash
+#SBATCH --job-name=container_job
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=16
+
+# Load required modules
+ml charliecloud
+
+# Run MPI application in container
+mpirun ch-run -b /scratch:/scratch ./images/myapp -- ./parallel_code
+```
+
+### Building Scientific Containers
+
+Example Dockerfile for scientific software:
+
+```dockerfile
+FROM ubuntu:20.04
+
+# Install base dependencies
+RUN apt-get update && apt-get install -y \
+    gcc gfortran python3 python3-pip \
+    libopenmpi-dev openmpi-bin
+
+# Install Python packages
+RUN pip3 install numpy scipy matplotlib
+
+# Copy application code
+COPY . /app
+WORKDIR /app
+
+# Compile if needed
+RUN make
+
+CMD ["./myapp"]
+```
+
+### Performance Considerations
+
+```bash
+# Use tmpfs for temporary data
+ch-run --tmpfs=/tmp ./images/myapp -- ./compute_intensive
+
+# Bind mount high-performance storage
+ch-run -b /lustre:/lustre -b /gpfs:/gpfs ./images/myapp -- ./io_intensive
+
+# Access GPUs
+ch-run --nvidia ./images/cuda_app -- ./gpu_program
+```
+
+### Debugging and Troubleshooting
+
+```bash
+# Verbose output
+ch-run -v ./images/myapp -- ./problematic_program
+
+# Interactive debugging
+ch-run ./images/myapp -- /bin/bash
+
+# Check image contents
+ch-run ./images/myapp -- ls -la /
+ch-run ./images/myapp -- env
+```
+
+### Advanced Features
+
+```bash
+# Custom user namespace mapping
+ch-run --uid=1000 --gid=1000 ./images/myapp -- id
+
+# Multiple bind mounts
+ch-run -b /data1:/data1 -b /data2:/data2 ./images/myapp -- ./analysis
+
+# Environment variables
+ch-run -e CUDA_VISIBLE_DEVICES=0,1 ./images/gpu_app -- ./gpu_code
+```
+
+### Documentation and Resources
+
+- **Official Documentation**: [Charliecloud Docs](https://charliecloud.io/latest/)
+- **Best Practices**: [Charliecloud Best Practices](https://charliecloud.io/latest/best_practices.html)
+- **Scientific Containerization**: [Grüning et al. (2018)](https://f1000research.com/articles/7-742/v2) provides a valuable editorial with eleven specific recommendations for containerizing scientific software
+
 
 ## Spack
 
-The users' applications are installed, maintained, and loaded/unloaded from the shell on the cluster using [Spack](https://spack.readthedocs.io/en/latest/). Spack is a package management tools designed to support multiple versions and configurations of software on a wide variety of platforms and environments.
+The users' applications are installed, maintained, and loaded/unloade  from the shell on the cluster using [Spack](https://spack.readthedocs.io/en/latest/). Spack is a package management tools designed to support multiple versions and configurations of software on a wide variety of platforms and environments.
 
 ### Find applications and packages
 
@@ -96,30 +364,26 @@ spack find --loaded -x
 spack load --list
 ```
 
-## Installed applications
+### Install using Spack
 
-### Compilers
+If the software installer is available via Spack (you can check by running the command `spack list <name-of-application>` you can install it using **Spack**. We suggest to use this method since it allows automatic reuse of the dependency software already installed globally via Spack. A detailed instructions on how to setup your own Spack environment and install your application within it read the following [manual](https://spack-tutorial.readthedocs.io/en/latest/tutorial_environments.html).
 
-The list of compilers and their corresponding Spack packages are listed in the table:
+To create a Spack environment as a system user add the flag `-d`:
+```
+spack env create -d /path/to/directory/<env-name>
+```
 
-| Version               | package                          |
-|-----------------------|----------------------------------|
-| GCC 4.8.5             |                                  |
-| GCC 9.4.0             | gcc@9.4.0                        |
-| GCC 11.2.0            | gcc@11.2.0                       |
-| Intel OneAPI 2022.0.1 | intel-openapi-compilers@2022.0.1 |
-| NVHPC 2022.1          | nvhpc@22.1                       |
+The folder with the environment name will be stored on the given path (if not provided, the environment will be created in the current directory).
 
-### MPI
+To activate the environment run:
+```
+spack env activate -d -p /path/to/directory/<env-name>
+```
 
-The list of the available MPI versions:
-
-| Variant        | Version   | CUDA support | UCX |
-|----------------|-----------|--------------|-----|
-| MPICH          | 4.0.2     | Yes          | Yes |
-| OpenMPI        | 4.1.2     | Yes          | Yes |
-| OpenMPI        | 4.1.3     | No           | No  |
-
+Deactivate environment by typing:
+```
+despacktivate
+```
 
 ### Users's applications
 
@@ -143,37 +407,3 @@ List of installed user's applications (multiple versions are possible):
 - [RStudio](https://www.rstudio.com/): 1.4.1717
 - [Slate](https://icl.utk.edu/slate/): 2021.05.02
 
-## How to install new software
-
-### System-wide installation
-
-If you want to install new software system-wide, so that the application is available to all users of the Orthus cluster, send your request on the email: [orthus-users@irb.hr](mailto:orthus-users@irb.hr).
-
-### Local installation
-
-If you want to install application locally there are two way to do so. In both cases, the application will be installed in your user's home folder and therefor will be **visible and accessible only to you**. Other users will now have an access to the application nor its dependencies.
-
-#### Manual installation
-
-The instalation can be done manually by first downloading the source code of the application in your home folder and then by following the installation instructions provided with the software. If the installation is done using *cmake* don't forget first to load *CMake* module using `spack load cmake`.
-
-#### Install using Spack
-
-If the software installer is available via Spack (you can check by running the command `spack list <name-of-application>` you can install it using **Spack**. We suggest to use this method since it allows automatic reuse of the dependency software already installed globally via Spack. A detailed instructions on how to setup your own Spack environment and install your application within it read the following [manual](https://spack-tutorial.readthedocs.io/en/latest/tutorial_environments.html).
-
-To create a Spack environment as a system user add the flag `-d`:
-```
-spack env create -d /path/to/directory/<env-name>
-```
-
-The folder with the environment name will be stored on the given path (if not provided, the environment will be created in the current directory).
-
-To activate the environment run:
-```
-spack env activate -d -p /path/to/directory/<env-name>
-```
-
-Deactivate environment by typing:
-```
-despacktivate
-```

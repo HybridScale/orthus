@@ -13,20 +13,15 @@ filename: access
 
 ## Login node
  - hostname: **orthus.cir.irb.hr**
- - ip address: 10.129.8.65
 
 ## Access from the RBI network
-### Linux
+### Linux / Mac / Windows
+When first requesting access to the cluster the admin would have requested a public ssh key and created an account for you. Authtication to the cluster is only possible via ssh key, not a password. More information on using ssh keys can be found [here](https://linuxhint.com/ssh-using-private-key-linux/). 
 
-If you are using any of the Linux operating systems, the cluster can be access from the command line with:
+The cluster can be access from the command line (Linux, Mac or Windows Linux Subsystem) with:
 
 ```
-ssh <username>orthus.cir.irb.hr
-```
-
-and typing your password.
-
-We encourage the access using SSH protocol by using private key rather than password. How to setup ssh access without providing password can be found [here](https://linuxhint.com/ssh-using-private-key-linux/).
+ssh <username>@orthus.cir.irb.hr
 
 ## Access from outside the RBI network
 
