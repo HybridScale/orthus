@@ -17,7 +17,7 @@ order: 2
 
 ## Access from the RBI network
 ### Linux / Mac / Windows
-When first requesting access to the cluster you will be asked to provide a public ssh key and then a created an account for you.
+When first requesting access to the cluster you will be asked to provide a public ssh key and then an account will be created for you.
 
 Authentication to the cluster is only possible via ssh key, not a password. 
 If you do not already have an ssh key you can generate a new one with the following command on your UNIX command line:
