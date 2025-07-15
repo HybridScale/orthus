@@ -180,20 +180,17 @@ echo "Working directory: $(pwd)"
 
 ### Interactive jobs
 
-To start an interactive job, use the `srun` command with the `--pty` flag. This gives you direct access to a compute node:
+To start an interactive job use the `qalloc srun` command with the `--pty` flag. This gives you direct access to a compute node:
 ```bash
-srun --pty bash
+salloc srun --pty bash
 ```
 
 For example, to run an interactive job that requires 4 CPU cores for 2 hours:
 ```bash
-srun --partition=all --ntasks=4 --time=02:00:00 --pty bash
+salloc --partition=all --ntasks=4 --time=02:00:00 srun --pty bash
 ```
 
-For GUI applications, you may need to enable X11 forwarding:
-```bash
-srun --partition=all --ntasks=4 --time=02:00:00 --x11 --pty bash
-```
+It is also possible to ssh to the compute node (`ssh compute01`) but this is only allowed when there is an active job for your user active on the node.
 
 ### Array jobs
 Slurm enables multiple submissions of the same job with different parameters, called job arrays. Each job inside the array is called a *task* and has its unique identifier.
