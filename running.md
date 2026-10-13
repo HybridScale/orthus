@@ -14,6 +14,7 @@ order: 3
 3. [Running jobs](#running-jobs)
     - [Job description](#job-description)
     - [Slurm environment variables](#slurm-environment-variables)
+    - [Job priority](#job-priority)
 4. [Types of jobs](#types-of-jobs)
     - [Serial jobs](#serial-jobs)
     - [Interactive jobs](#interactive-jobs)
@@ -155,6 +156,14 @@ $SLURM_ARRAY_TASK_ID   # Task ID within job array
 $SLURM_TMPDIR          # Temporary directory (typically /scratch)
 ```
 
+### Job priority
+
+Waiting jobs are ordered by fair-share: users who used less of the cluster recently start first. Usage counts CPU cores (a GPU counts as 12 cores) and fades with a half-life of 7 days. To check:
+```bash
+sprio -u $USER    # priority of your waiting jobs
+sshare -u $USER   # your fair-share score (higher is better)
+```
+
 ## Types of jobs
 
 ### Serial jobs
@@ -294,7 +303,7 @@ srun --cpu-bind=cores ./my-hybrid-application
 
 ### GPU jobs
 
-GPU jobs require special resource allocation using the `--gres` flag. An example GPU job script that requires 1 CPU core and 2 GPU devices:
+GPU jobs require special resource allocation using the `--gres` flag. They run in the `gpu` partition automatically (you don't need to select it), which always keeps 4 CPU cores free so GPU jobs can start even when the CPU part is full. An example GPU job script that requires 1 CPU core and 2 GPU devices:
 
 ```bash
 #!/bin/bash

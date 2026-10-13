@@ -14,6 +14,7 @@ order: 2
 
 ## Login node
  - hostname: **orthus.cir.irb.hr**
+ - if you are on the ZEL network, use the IP address instead of the hostname: **192.168.2.33** (e.g. `ssh <username>@192.168.2.33`)
 
 ## Access from the RBI network
 ### Linux / Mac / Windows
