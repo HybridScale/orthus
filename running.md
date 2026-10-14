@@ -24,6 +24,7 @@ order: 3
     - [Parallel jobs](#parallel-jobs)
         - [MPI + OpenMP](#mpi-with-openmp-threads)
     - [GPU jobs](#gpu-jobs)
+        - [QoS burst](#using-the-burst-qos)
 5. [Monitoring and management of jobs](#monitoring-and-management-of-jobs)
     - [Host information](#host-information)
     - [Job management](#job-management)
@@ -356,6 +357,27 @@ module load cuda
 
 # Run your GPU application
 ./my_gpu_program
+```
+#### Using the burst QoS
+
+If your workload requires more GPUs than are available under the regular [per-user limits](#partitions-and-resource-limits), you can request the `burst` QoS.
+
+The `burst` QoS allows you to access all GPUs for short, intensive workloads, subject to resource availability.
+
+> **⚠️ Important**
+>
+> The following restrictions apply:
+> - Jobs using `burst` have a maximum wall time of **6 hours**.
+> - Each user can have at most **2 submitted jobs** using `burst`, including pending and running jobs.
+> - Use `burst` only when your workload genuinely requires additional GPU resources.
+
+The `burst` QoS does not guarantee immediate access to all GPUs. Jobs are scheduled according to resource availability and Slurm scheduling policies.
+
+To submit a job using `burst`, specify both the `gpu` partition and the QoS:
+```bash
+#SBATCH --qos=burst
+#SBATCH --gres=gpu:4
+#SBATCH --time=06:00:00
 ```
 
 ## Monitoring and management of jobs
