@@ -13,6 +13,8 @@ order: 3
     - [Scratch folder](#scratch-folder)
 3. [Running jobs](#running-jobs)
     - [Job description](#job-description)
+    - [Partitions and resource limits](#partitions-and-resource-limits)
+    - [Wall time](#wall-time)
     - [Slurm environment variables](#slurm-environment-variables)
     - [Job priority](#job-priority)
 4. [Types of jobs](#types-of-jobs)
@@ -138,6 +140,32 @@ The basic Slurm parameters for describing jobs are:
 --mem-per-cpu=<size>       # Memory per CPU core
 --partition=all            # Partition name (use "all")
 --gres=gpu:<count>         # GPU resources
+```
+
+### Partitions and resource limits
+
+Orthus uses Slurm partitions to organize job scheduling and resource allocation.
+There are two partitions available: `all` and `gpu`.
+
+| Partition | Intended use | Default wall time | Maximum wall time | Resource limits |
+| --- | --- | --- | --- | --- |
+| `all` | General CPU jobs  | 6 hours | 72 hours | max 24 CPUs & 250GB|
+| `gpu` | GPU jobs requiring | 6 hours | 72 hours |  max 24 CPUs & 250GB & 2 GPUs |
+
+To ensure fair resource sharing, each user can use up to **24 CPUs, 250GB and 2 GPUs cumulatively**. These limits apply across the user's jobs, rather than independently to every job. For example, if you already have jobs using 16 CPUs, you can request up to 8 additional CPUs, provided that the other scheduling limits allow it.
+
+### Wall time
+
+Every job has a walltime limit, which specifies the maximum time it is allowed to run. Until now it was unlimited!
+> **⚠️ Important**
+>
+> - The default wall time is **6 hours** if no wall time is specified in the job script.
+> - The maximum wall time for regular jobs is **72 hours**.
+> - Jobs using the `burst` QoS are limited to **6 hours**.
+
+You can specify the requested wall time in your job script using the `--time` directive:
+```bash
+    #SBATCH --time=12:00:00
 ```
 
 ### Slurm environment variables
